@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.learning.j2ee.supermarket.dao;
+package org.learning.j2ee.supermarket.dao.test;
 
 import static org.junit.Assert.fail;
 
@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.learning.j2ee.supermarket.dao.test.SupermarketMySql;
-import org.learning.j2ee.supermarket.dao.test.Tb_basicmessage;
-import org.learning.j2ee.supermarket.dao.test.Tb_basicmessageDao;
+import org.learning.j2ee.supermarket.dao.SupermarketMySql;
+import org.learning.j2ee.supermarket.dao.Tb_basicmessage;
+import org.learning.j2ee.supermarket.dao.Tb_basicmessageDao;
 
 /**
  * @author brliu

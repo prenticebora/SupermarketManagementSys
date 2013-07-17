@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.learning.j2ee.supermarket.dao.test;
+package org.learning.j2ee.supermarket.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

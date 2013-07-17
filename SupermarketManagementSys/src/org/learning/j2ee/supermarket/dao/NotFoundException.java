@@ -1,4 +1,4 @@
-package org.learning.j2ee.supermarket.dao.test;
+package org.learning.j2ee.supermarket.dao;
 
 
 /**
