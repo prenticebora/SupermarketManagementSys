@@ -12,8 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.learning.j2ee.supermarket.dao.SupermarketMySql;
-import org.learning.j2ee.supermarket.dao.Tb_basicmessage;
-import org.learning.j2ee.supermarket.dao.Tb_basicmessageDao;
+import org.learning.j2ee.supermarket.dao.Basicmessage;
+import org.learning.j2ee.supermarket.dao.BasicmessageDao;
 
 /**
  * @author brliu
@@ -39,14 +39,14 @@ public class TestSupermarketDao {
 
 	@Test
 	public void testBasicMessageDao() {
-		Tb_basicmessage basicmessage = new Tb_basicmessage();
+		Basicmessage basicmessage = new Basicmessage();
 
 		basicmessage.setName("Brian");
 		basicmessage.setAge(32);
 		basicmessage.setDept(2);
 		basicmessage.setPositionId(5);
 
-		Tb_basicmessageDao basicmessageDao = new Tb_basicmessageDao();
+		BasicmessageDao basicmessageDao = new BasicmessageDao();
 
 		try {
 			basicmessageDao.create(conn, basicmessage);

@@ -31,7 +31,7 @@ import java.util.List;
  * information. Thank you!
  */
 
-public class Tb_basicmessageDao {
+public class BasicmessageDao {
 
 	/**
 	 * createValueObject-method. This method is used when the Dao class needs to
@@ -41,8 +41,8 @@ public class Tb_basicmessageDao {
 	 * If you extend the valueObject class, make sure to override the clone()
 	 * method in it!
 	 */
-	public Tb_basicmessage createValueObject() {
-		return new Tb_basicmessage();
+	public Basicmessage createValueObject() {
+		return new Basicmessage();
 	}
 
 	/**
@@ -52,10 +52,10 @@ public class Tb_basicmessageDao {
 	 * as a parameter. Returned valueObject will be created using the
 	 * createValueObject() method.
 	 */
-	public Tb_basicmessage getObject(Connection conn, int id)
+	public Basicmessage getObject(Connection conn, int id)
 			throws NotFoundException, SQLException {
 
-		Tb_basicmessage valueObject = createValueObject();
+		Basicmessage valueObject = createValueObject();
 		valueObject.setId(id);
 		load(conn, valueObject);
 		return valueObject;
@@ -76,7 +76,7 @@ public class Tb_basicmessageDao {
 	 *            This parameter contains the class instance to be loaded.
 	 *            Primary-key field must be set for this to work properly.
 	 */
-	public void load(Connection conn, Tb_basicmessage valueObject)
+	public void load(Connection conn, Basicmessage valueObject)
 			throws NotFoundException, SQLException {
 
 		String sql = "SELECT * FROM tb_basicmessage WHERE (id = ? ) ";
@@ -126,7 +126,7 @@ public class Tb_basicmessageDao {
 	 *            automatic surrogate-keys are not used the Primary-key field
 	 *            must be set for this to work properly.
 	 */
-	public synchronized void create(Connection conn, Tb_basicmessage valueObject)
+	public synchronized void create(Connection conn, Basicmessage valueObject)
 			throws SQLException {
 
 		String sql = "";
@@ -197,7 +197,7 @@ public class Tb_basicmessageDao {
 	 *            This parameter contains the class instance to be saved.
 	 *            Primary-key field must be set for this to work properly.
 	 */
-	public void save(Connection conn, Tb_basicmessage valueObject)
+	public void save(Connection conn, Basicmessage valueObject)
 			throws NotFoundException, SQLException {
 
 		String sql = "UPDATE tb_basicmessage SET name = ?, age = ?, dept = ?, "
@@ -245,7 +245,7 @@ public class Tb_basicmessageDao {
 	 *            This parameter contains the class instance to be deleted.
 	 *            Primary-key field must be set for this to work properly.
 	 */
-	public void delete(Connection conn, Tb_basicmessage valueObject)
+	public void delete(Connection conn, Basicmessage valueObject)
 			throws NotFoundException, SQLException {
 
 		String sql = "DELETE FROM tb_basicmessage WHERE (id = ? ) ";
@@ -347,7 +347,7 @@ public class Tb_basicmessageDao {
 	 *            This parameter contains the class instance where search will
 	 *            be based. Primary-key field should not be set.
 	 */
-	public List searchMatching(Connection conn, Tb_basicmessage valueObject)
+	public List searchMatching(Connection conn, Basicmessage valueObject)
 			throws SQLException {
 
 		List searchResults;
@@ -448,7 +448,7 @@ public class Tb_basicmessageDao {
 	 *            Class-instance where resulting data will be stored.
 	 */
 	protected void singleQuery(Connection conn, PreparedStatement stmt,
-			Tb_basicmessage valueObject) throws NotFoundException, SQLException {
+			Basicmessage valueObject) throws NotFoundException, SQLException {
 
 		ResultSet result = null;
 
@@ -496,7 +496,7 @@ public class Tb_basicmessageDao {
 			result = stmt.executeQuery();
 
 			while (result.next()) {
-				Tb_basicmessage temp = createValueObject();
+				Basicmessage temp = createValueObject();
 
 				temp.setId(result.getInt("id"));
 				temp.setName(result.getString("name"));

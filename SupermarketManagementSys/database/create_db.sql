@@ -32,11 +32,23 @@ weight float,
 remark varchar(200)
 );
 
-CREATE TABLE tb_users (
-id int unsigned primary key auto_increment,
-userName varchar(20),
-password varchar(20)
-);
+
+# SQL command to create the table: 
+# Remember to correct VARCHAR column lengths to proper values 
+# and add additional indexes for your own extensions.
+
+# If you had prepaired CREATE TABLE SQL-statement before, 
+# make sure that this automatically generated code is 
+# compatible with your own code. If SQL code is incompatible,
+# it is not possible to use these generated sources successfully.
+# (Changing VARCHAR column lenghts will not break code.)
+
+CREATE TABLE tb_user (
+      id bigint AUTO_INCREMENT NOT NULL,
+      userName varchar(255),
+      password varchar(255),
+PRIMARY KEY(id),
+INDEX tb_user_id_INDEX (id));
 
 CREATE TABLE tb_provider (
 id int unsigned not null primary key auto_increment,

@@ -3,8 +3,8 @@ package org.learning.j2ee.supermarket.dao;
 import java.io.Serializable;
 
 /**
- * Tb_basicmessage Value Object.
- * This class is value object representing database table tb_basicmessage
+ * User Value Object.
+ * This class is value object representing database table tb_user
  * This class is intented to be used together with associated Dao object.
  */
 
@@ -26,17 +26,15 @@ import java.io.Serializable;
  * information. Thank you!
  */
 
-public class Tb_basicmessage implements Cloneable, Serializable {
+public class User implements Cloneable, Serializable {
 
 	/**
 	 * Persistent Instance variables. This data is directly mapped to the
 	 * columns of database table.
 	 */
 	private int id;
-	private String name;
-	private int age;
-	private int dept;
-	private int positionId;
+	private String userName;
+	private String password;
 
 	/**
 	 * Constructors. DaoGen generates two constructors by default. The first one
@@ -45,11 +43,11 @@ public class Tb_basicmessage implements Cloneable, Serializable {
 	 * the corresponding table.
 	 */
 
-	public Tb_basicmessage() {
+	public User() {
 
 	}
 
-	public Tb_basicmessage(int idIn) {
+	public User(int idIn) {
 
 		this.id = idIn;
 
@@ -69,36 +67,20 @@ public class Tb_basicmessage implements Cloneable, Serializable {
 		this.id = idIn;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getUserName() {
+		return this.userName;
 	}
 
-	public void setName(String nameIn) {
-		this.name = nameIn;
+	public void setUserName(String userNameIn) {
+		this.userName = userNameIn;
 	}
 
-	public int getAge() {
-		return this.age;
+	public String getPassword() {
+		return this.password;
 	}
 
-	public void setAge(int ageIn) {
-		this.age = ageIn;
-	}
-
-	public int getDept() {
-		return this.dept;
-	}
-
-	public void setDept(int deptIn) {
-		this.dept = deptIn;
-	}
-
-	public int getPositionId() {
-		return this.positionId;
-	}
-
-	public void setPositionId(int positionIdIn) {
-		this.positionId = positionIdIn;
+	public void setPassword(String passwordIn) {
+		this.password = passwordIn;
 	}
 
 	/**
@@ -108,40 +90,34 @@ public class Tb_basicmessage implements Cloneable, Serializable {
 	 * variales, without going trough the individual set-methods.
 	 */
 
-	public void setAll(int idIn, String nameIn, int ageIn, int deptIn,
-			int positionIdIn) {
+	public void setAll(int idIn, String userNameIn, String passwordIn) {
 		this.id = idIn;
-		this.name = nameIn;
-		this.age = ageIn;
-		this.dept = deptIn;
-		this.positionId = positionIdIn;
+		this.userName = userNameIn;
+		this.password = passwordIn;
 	}
 
 	/**
-	 * hasEqualMapping-method will compare two Tb_basicmessage instances and
-	 * return true if they contain same values in all persistent instance
-	 * variables. If hasEqualMapping returns true, it does not mean the objects
-	 * are the same instance. However it does mean that in that moment, they are
-	 * mapped to the same row in database.
+	 * hasEqualMapping-method will compare two User instances and return true if
+	 * they contain same values in all persistent instance variables. If
+	 * hasEqualMapping returns true, it does not mean the objects are the same
+	 * instance. However it does mean that in that moment, they are mapped to
+	 * the same row in database.
 	 */
-	public boolean hasEqualMapping(Tb_basicmessage valueObject) {
+	public boolean hasEqualMapping(User valueObject) {
 
 		if (valueObject.getId() != this.id) {
 			return (false);
 		}
-		if (this.name == null) {
-			if (valueObject.getName() != null)
+		if (this.userName == null) {
+			if (valueObject.getUserName() != null)
 				return (false);
-		} else if (!this.name.equals(valueObject.getName())) {
+		} else if (!this.userName.equals(valueObject.getUserName())) {
 			return (false);
 		}
-		if (valueObject.getAge() != this.age) {
-			return (false);
-		}
-		if (valueObject.getDept() != this.dept) {
-			return (false);
-		}
-		if (valueObject.getPositionId() != this.positionId) {
+		if (this.password == null) {
+			if (valueObject.getPassword() != null)
+				return (false);
+		} else if (!this.password.equals(valueObject.getPassword())) {
 			return (false);
 		}
 
@@ -155,13 +131,11 @@ public class Tb_basicmessage implements Cloneable, Serializable {
 	 */
 	public String toString() {
 		StringBuffer out = new StringBuffer(this.getDaogenVersion());
-		out.append("\nclass Tb_basicmessage, mapping to table tb_basicmessage\n");
+		out.append("\nclass User, mapping to table tb_user\n");
 		out.append("Persistent attributes: \n");
 		out.append("id = " + this.id + "\n");
-		out.append("name = " + this.name + "\n");
-		out.append("age = " + this.age + "\n");
-		out.append("dept = " + this.dept + "\n");
-		out.append("positionId = " + this.positionId + "\n");
+		out.append("userName = " + this.userName + "\n");
+		out.append("password = " + this.password + "\n");
 		return out.toString();
 	}
 
@@ -172,14 +146,13 @@ public class Tb_basicmessage implements Cloneable, Serializable {
 	 * attributes cloned.
 	 */
 	public Object clone() {
-		Tb_basicmessage cloned = new Tb_basicmessage();
+		User cloned = new User();
 
 		cloned.setId(this.id);
-		if (this.name != null)
-			cloned.setName(new String(this.name));
-		cloned.setAge(this.age);
-		cloned.setDept(this.dept);
-		cloned.setPositionId(this.positionId);
+		if (this.userName != null)
+			cloned.setUserName(new String(this.userName));
+		if (this.password != null)
+			cloned.setPassword(new String(this.password));
 		return cloned;
 	}
 
