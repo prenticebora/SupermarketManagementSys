@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<!DOCTYPE daogen-metadata>
+
+<daogen-metadata>
+   <version>2.4.1</version>
+   <timestamp>17.07.2013</timestamp>
+
+   <tableName>db_supermarket</tableName>
+   <className>Tb_basicmessage</className>
+   <language>java</language>
+   <database>mysql</database>
+   <useCache>false</useCache>
+   <classPackage>java.learning.j2ee.supermarket</classPackage>
+   <columns>
+      <dbColumn PK="true" colType="Int" colName="id" varName="id" 
+      automatic="true" valueSource="null" indexed="true" colLength="10" orderLevel="1" orderType="ASC" />
+
+      <dbColumn PK="false" colType="String" colName="name" varName="name" 
+      automatic="false" valueSource="" indexed="false" colLength="255" orderLevel="0" orderType="ASC" />
+
+      <dbColumn PK="false" colType="Int" colName="age" varName="age" 
+      automatic="false" valueSource="" indexed="false" colLength="10" orderLevel="0" orderType="ASC" />
+
+      <dbColumn PK="false" colType="Int" colName="dept" varName="dept" 
+      automatic="false" valueSource="" indexed="false" colLength="10" orderLevel="0" orderType="ASC" />
+
+      <dbColumn PK="false" colType="Int" colName="positionId" varName="positionId" 
+      automatic="false" valueSource="" indexed="false" colLength="10" orderLevel="0" orderType="ASC" />
+
+   </columns>
+</daogen-metadata>
