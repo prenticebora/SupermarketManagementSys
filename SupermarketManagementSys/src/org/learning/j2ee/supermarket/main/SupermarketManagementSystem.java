@@ -2,12 +2,14 @@ package org.learning.j2ee.supermarket.main;
 
 import java.awt.EventQueue;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.io.Serializable;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,6 +26,9 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import org.learning.j2ee.supermarket.dao.SupermarketMySql;
 import org.learning.j2ee.supermarket.dao.User;
 import org.learning.j2ee.supermarket.dao.UserDao;
+import org.learning.j2ee.supermarket.frame.CreateNewUserWindow;
+import org.learning.j2ee.supermarket.frame.MainFunctionFrame;
+import org.learning.j2ee.supermarket.util.Session;
 
 public class SupermarketManagementSystem extends JFrame {
 	private BackgroundPanel loginPanel;
@@ -81,6 +86,12 @@ public class SupermarketManagementSystem extends JFrame {
 	private BackgroundPanel getLoginPanel() {
 		if (loginPanel == null) {
 			loginPanel = new BackgroundPanel();// 创建登录面板对象
+			loginPanel
+					.setImage(Toolkit
+							.getDefaultToolkit()
+							.getImage(
+									SupermarketManagementSystem.class
+											.getResource("/org/learning/j2ee/supermarket/main/login.png")));
 
 			loginPanel.config();
 
@@ -106,19 +117,17 @@ public class SupermarketManagementSystem extends JFrame {
 	private void addCreateUserButton() {
 		JButton createNewUserButton = new JButton("添加新用户");
 
-		// createNewUserButton.setContentAreaFilled(false); // 取消填充区域
-		// createNewUserButton.setBorder(null); // 取消边框
-
 		createNewUserButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				CreateNewUserWindow createNewUserWindow = new CreateNewUserWindow();
+				createNewUserWindow.setVisible(true);
 
 			}
 		});
 
-		createNewUserButton.setBounds(253, 180, 93, 40);
+		createNewUserButton.setBounds(253, 191, 93, 40);
 		loginPanel.add(createNewUserButton);
 
 	}
@@ -128,8 +137,7 @@ public class SupermarketManagementSystem extends JFrame {
 		URL url = getClass().getResource("enter.png");
 		ImageIcon imageIcon = new ImageIcon(url);
 
-		loginButton.setBounds(0, 40, imageIcon.getIconWidth(),
-				imageIcon.getIconHeight());
+		loginButton.setBounds(198, 74, 93, 25);
 		loginButton.setIcon(imageIcon);
 		loginButton.setContentAreaFilled(false); // 取消填充区域
 		loginButton.setBorder(null); // 取消边框
@@ -141,8 +149,9 @@ public class SupermarketManagementSystem extends JFrame {
 						userToLogin.setPassword(passwordField.getText()); // 以用户添加的用户名与密码为参数调用查询用户方法
 
 						UserDao userDao = new UserDao();
+						List<User> searchResult = null;
 						try {
-							userDao.searchMatching(
+							searchResult = userDao.searchMatching(
 									SupermarketMySql.getConnection(),
 									userToLogin);
 						} catch (SQLException e1) {
@@ -153,11 +162,11 @@ public class SupermarketManagementSystem extends JFrame {
 
 						}
 
-						if (userToLogin.getId() > 0) { // 判断用户编号是否大于0
-							// Session.setUser(user); // 设置Session对象的User属性值
-							// RemoveButtomFrame frame = new
-							// RemoveButtomFrame(); // 创建主窗体对象
-							// frame.setVisible(true); // 显示主窗体
+						if (searchResult.get(0).getId() > 0) { // 判断用户编号是否大于0
+							Session.setUser(userToLogin); // 设置Session对象的User属性值
+							MainFunctionFrame frame = new MainFunctionFrame(); // 创建主窗体对象
+							frame.setVisible(true); // 显示主窗体
+
 							SupermarketManagementSystem.this.dispose(); // 销毁登录窗体
 						} else { // 如果用户输入的用户名与密码错误
 							JOptionPane.showMessageDialog(getContentPane(),
