@@ -136,8 +136,7 @@ public class AddDepotPanel extends JPanel {
 			}
 		});
 		
-		findButton.setBounds(513, 82, 93, 23);
-		add(findButton);
+		addFindButton(findButton);
 
 		addInsertButton();
 		
@@ -148,6 +147,11 @@ public class AddDepotPanel extends JPanel {
 		addSearchCriteriaInputArea();
 
 		initializeStockDisplayTable();
+	}
+
+	private void addFindButton(JButton findButton) {
+		findButton.setBounds(513, 82, 93, 23);
+		add(findButton);
 	}
 
 	private void addSearchCriteriaInputArea() {
