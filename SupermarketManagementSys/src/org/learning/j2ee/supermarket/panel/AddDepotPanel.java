@@ -66,15 +66,7 @@ public class AddDepotPanel extends JPanel {
 					JoinDepot searchTargetDepot = new JoinDepot();
 					searchTargetDepot.setOrderId(oid);
 
-					List list = null;
-					try {
-						list = dao.searchMatching(
-								SupermarketMySql.getConnection(),
-								searchTargetDepot);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					List list = searchMatchingRecords(searchTargetDepot);
 
 					for (int i = 0; i < list.size(); i++) {
 						JoinDepot depot = (JoinDepot) list.get(i);
@@ -98,30 +90,15 @@ public class AddDepotPanel extends JPanel {
 				} else if (oid.equals("") && (!joinDate.equals(""))) {
 					JoinDepot searchTargetDepot = new JoinDepot();
 					searchTargetDepot.setJoinTime(joinDate.toString());
-					List matchingRecords = null;
-					try {
-						matchingRecords = dao.searchMatching(
-								SupermarketMySql.getConnection(),
-								searchTargetDepot);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					
+					List matchingRecords = searchMatchingRecords(searchTargetDepot);
 
 					displaySearchResult(matchingRecords);
 
 				} else if (!oid.equals("") && (!joinDate.equals(""))) {
 					JoinDepot searchTargetDepot = new JoinDepot();
 					searchTargetDepot.setJoinTime(joinDate.toString());
-					List list = null;
-					try {
-						list = dao.searchMatching(
-								SupermarketMySql.getConnection(),
-								searchTargetDepot);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+					List list = searchMatchingRecords(searchTargetDepot);
 
 					for (int i = 0; i < list.size(); i++) {
 						JoinDepot depot = (JoinDepot) list.get(i);
@@ -144,10 +121,81 @@ public class AddDepotPanel extends JPanel {
 					}
 				}
 			}
+
+			private List searchMatchingRecords(JoinDepot searchTargetDepot) {
+				List matchingRecords = null;
+				try {
+					matchingRecords = dao.searchMatching(
+							SupermarketMySql.getConnection(),
+							searchTargetDepot);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				return matchingRecords;
+			}
 		});
+		
 		findButton.setBounds(513, 82, 93, 23);
 		add(findButton);
 
+		addInsertButton();
+		
+		addUpdateButton();
+
+		addDeleteButton();
+
+		addSearchCriteriaInputArea();
+
+		initializeStockDisplayTable();
+	}
+
+	private void addSearchCriteriaInputArea() {
+		JLabel dateLabel = new JLabel("入库时间：");
+		dateLabel.setBounds(282, 86, 66, 15);
+		add(dateLabel);
+		
+		List lists = null;
+		try {
+			lists = dao.loadAll(SupermarketMySql.getConnection());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String[] orderId = new String[lists.size() + 1];
+		orderId[0] = "";
+		for (int i = 0; i < lists.size(); i++) {
+			orderId[i + 1] = ((JoinDepot) (lists.get(i))).getOrderId();
+		}
+		comboBox = new JComboBox(orderId);
+		comboBox.setBounds(110, 83, 162, 21);
+		add(comboBox);
+	}
+
+	private void addDeleteButton() {
+		JButton deleteButton = new JButton("删除");
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table_1.getSelectedRow();
+				if (row < 0) {
+					JOptionPane.showMessageDialog(getParent(), "没有选择要刪除的数据！",
+							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				} else {
+					// String column = model.getValueAt(row, 0).toString();
+					// dao.deleteJoinDepot(Integer.parseInt(column));
+					JOptionPane.showMessageDialog(getParent(), "数据删除成功！",
+							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
+					repaint();
+
+				}
+			}
+		});
+		deleteButton.setBounds(380, 369, 66, 23);
+		add(deleteButton);
+	}
+
+	private void addInsertButton() {
 		JButton insertButton = new JButton("添加");
 		insertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -157,6 +205,9 @@ public class AddDepotPanel extends JPanel {
 		});
 		insertButton.setBounds(167, 369, 66, 23);
 		add(insertButton);
+	}
+
+	private void addUpdateButton() {
 		JButton updateButton = new JButton("修改");
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -184,51 +235,9 @@ public class AddDepotPanel extends JPanel {
 		});
 		updateButton.setBounds(282, 369, 66, 23);
 		add(updateButton);
-
-		JButton deleteButton = new JButton("删除");
-		deleteButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int row = table_1.getSelectedRow();
-				if (row < 0) {
-					JOptionPane.showMessageDialog(getParent(), "没有选择要刪除的数据！",
-							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
-					return;
-				} else {
-					// String column = model.getValueAt(row, 0).toString();
-					// dao.deleteJoinDepot(Integer.parseInt(column));
-					JOptionPane.showMessageDialog(getParent(), "数据删除成功！",
-							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
-					repaint();
-
-				}
-			}
-		});
-		deleteButton.setBounds(380, 369, 66, 23);
-		add(deleteButton);
-
-		JLabel dateLabel = new JLabel("入库时间：");
-		dateLabel.setBounds(282, 86, 66, 15);
-		add(dateLabel);
-		List lists = null;
-		try {
-			lists = dao.loadAll(SupermarketMySql.getConnection());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String[] orderId = new String[lists.size() + 1];
-		orderId[0] = "";
-		for (int i = 0; i < lists.size(); i++) {
-			orderId[i + 1] = ((JoinDepot) (lists.get(i))).getOrderId();
-		}
-		comboBox = new JComboBox(orderId);
-		comboBox.setBounds(110, 83, 162, 21);
-		add(comboBox);
-
-		initializeStockTable();
 	}
 
-	private void initializeStockTable() {
+	private void initializeStockDisplayTable() {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(68, 150, 534, 199);
 		add(scrollPane);
