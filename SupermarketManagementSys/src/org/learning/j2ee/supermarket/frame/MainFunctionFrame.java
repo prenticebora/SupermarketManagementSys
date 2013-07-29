@@ -29,6 +29,7 @@ import org.learning.j2ee.supermarket.dao.User;
 import org.learning.j2ee.supermarket.panel.AddDepotPanel;
 import org.learning.j2ee.supermarket.panel.ClockPanel;
 import org.learning.j2ee.supermarket.panel.MyJPanel;
+import org.learning.j2ee.supermarket.panel.UserPanel;
 import org.learning.j2ee.supermarket.util.Session;
 import org.learning.j2ee.supermarket.widget.BGPanel;
 import org.learning.j2ee.supermarket.widget.CalendarPanel;
@@ -196,6 +197,12 @@ public class MainFunctionFrame extends JFrame {
 							AddDepotPanel depotPanel = new AddDepotPanel();
 							sellPanel.add(depotPanel);
 							repaint();
+						} else if (userObject.equals("人员管理")) {
+							fristLabel.setText("人员管理");
+							sellPanel.removeAll();
+							UserPanel userPanel = new UserPanel();
+							sellPanel.add(userPanel);
+							repaint();
 						}
 					}
 				}
@@ -344,7 +351,8 @@ public class MainFunctionFrame extends JFrame {
 							getClass()
 									.getResource(
 											"/org/learning/j2ee/supermarket/util/buttonIcons/chuku2.png")));
-			checkOutDepositeButton.addActionListener(new toolsButtonActionAdapter());
+			checkOutDepositeButton
+					.addActionListener(new toolsButtonActionAdapter());
 		}
 		return checkOutDepositeButton;
 	}
@@ -353,8 +361,7 @@ public class MainFunctionFrame extends JFrame {
 	private GlassButton getPersonnelManagerButton() {
 		if (personnelManagerButton == null) {
 			personnelManagerButton = new GlassButton();
-			// personnelManagerButton.setText("人员管理");
-			personnelManagerButton.setActionCommand("查询及统计系统");
+			personnelManagerButton.setActionCommand("人员管理");//查询及统计系统");
 			// personnelManagerButton.setCursor(new
 			// Cursor(Cursor.DEFAULT_CURSOR));
 			ImageIcon imageIcon = new ImageIcon(
@@ -405,7 +412,7 @@ public class MainFunctionFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println(e.getSource());
-			
+
 			if (e.getSource() == workSpaceButton) {
 				// backPanel.removeAll();
 				// backPanel.add(label_1);
@@ -428,25 +435,37 @@ public class MainFunctionFrame extends JFrame {
 				repaint();
 			}
 			if (e.getActionCommand() == "仓库入库") {
-				 backPanel.removeAll();
-				 backPanel.add(label_1);
-				 fristLabel.setBounds(133, 38, 123, 15);
-				 backPanel.add(fristLabel);
-				 panel_1.setBounds(10, 63, 611, 386);
-				 AddDepotPanel joinPanel = new AddDepotPanel();
-				 backPanel.add(joinPanel);
-				 fristLabel.setText("仓库入库");
+				backPanel.removeAll();
+				backPanel.add(label_1);
+				fristLabel.setBounds(133, 38, 123, 15);
+				backPanel.add(fristLabel);
+				panel_1.setBounds(10, 63, 611, 386);
+				AddDepotPanel joinPanel = new AddDepotPanel();
+				backPanel.add(joinPanel);
+				fristLabel.setText("仓库入库");
+				repaint();
+			}
+
+			if (e.getActionCommand() == "人员管理") {
+				backPanel.removeAll();
+				backPanel.add(label_1);
+				fristLabel.setBounds(133, 38, 123, 15);
+				backPanel.add(fristLabel);
+				panel_1.setBounds(10, 63, 611, 386);
+				UserPanel userPanel = new UserPanel();
+				backPanel.add(userPanel);
+				fristLabel.setText("人员管理");
 				repaint();
 			}
 			if (e.getSource() == checkOutDepositeButton) {
-//				backPanel.removeAll();
-//				backPanel.add(label_1);
-//				fristLabel.setBounds(133, 38, 123, 15);
-//				backPanel.add(fristLabel);
-//				panel_1.setBounds(10, 63, 611, 386);
-//				 OutDepotPanel outPanel = new OutDepotPanel();
-//				 backPanel.add(outPanel);
-//				fristLabel.setText("仓库出库");
+				// backPanel.removeAll();
+				// backPanel.add(label_1);
+				// fristLabel.setBounds(133, 38, 123, 15);
+				// backPanel.add(fristLabel);
+				// panel_1.setBounds(10, 63, 611, 386);
+				// OutDepotPanel outPanel = new OutDepotPanel();
+				// backPanel.add(outPanel);
+				// fristLabel.setText("仓库出库");
 				repaint();
 			}
 			if (e.getSource() == deptManagerButton) {
