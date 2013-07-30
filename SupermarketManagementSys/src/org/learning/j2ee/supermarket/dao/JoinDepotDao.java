@@ -79,7 +79,7 @@ public class JoinDepotDao {
 	public void load(Connection conn, JoinDepot valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "SELECT * FROM tb_joinDepot WHERE (id = ? ) ";
+		String sql = "SELECT * FROM tb_joinDept WHERE (id = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
@@ -105,7 +105,7 @@ public class JoinDepotDao {
 	 */
 	public List loadAll(Connection conn) throws SQLException {
 
-		String sql = "SELECT * FROM tb_joinDepot ORDER BY id ASC ";
+		String sql = "SELECT * FROM tb_joinDept ORDER BY id ASC ";
 		List searchResults = listQuery(conn, conn.prepareStatement(sql));
 
 		return searchResults;
@@ -134,7 +134,7 @@ public class JoinDepotDao {
 		ResultSet result = null;
 
 		try {
-			sql = "INSERT INTO tb_joinDepot ( order_id, depo_id, wareName, "
+			sql = "INSERT INTO tb_joinDept ( order_id, depo_id, wareName, "
 					+ "joinTime, weight, remark) VALUES (?, ?, ?, ?, ?, ?) ";
 			stmt = conn.prepareStatement(sql);
 
@@ -202,7 +202,7 @@ public class JoinDepotDao {
 	public void save(Connection conn, JoinDepot valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "UPDATE tb_joinDepot SET order_id = ?, depo_id = ?, wareName = ?, "
+		String sql = "UPDATE tb_joinDept SET order_id = ?, depo_id = ?, wareName = ?, "
 				+ "joinTime = ?, weight = ?, remark = ? WHERE (id = ? ) ";
 		PreparedStatement stmt = null;
 
@@ -252,7 +252,7 @@ public class JoinDepotDao {
 	public void delete(Connection conn, JoinDepot valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "DELETE FROM tb_joinDepot WHERE (id = ? ) ";
+		String sql = "DELETE FROM tb_joinDept WHERE (id = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
@@ -292,7 +292,7 @@ public class JoinDepotDao {
 	 */
 	public void deleteAll(Connection conn) throws SQLException {
 
-		String sql = "DELETE FROM tb_joinDepot";
+		String sql = "DELETE FROM tb_joinDept";
 		PreparedStatement stmt = null;
 
 		try {
@@ -316,7 +316,7 @@ public class JoinDepotDao {
 	 */
 	public int countAll(Connection conn) throws SQLException {
 
-		String sql = "SELECT count(*) FROM tb_joinDepot";
+		String sql = "SELECT count(*) FROM tb_joinDept";
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 		int allRows = 0;
@@ -358,7 +358,7 @@ public class JoinDepotDao {
 
 		boolean first = true;
 		StringBuffer sql = new StringBuffer(
-				"SELECT * FROM tb_joinDepot WHERE 1=1 ");
+				"SELECT * FROM tb_joinDept WHERE 1=1 ");
 
 		if (valueObject.getId() != 0) {
 			if (first) {
