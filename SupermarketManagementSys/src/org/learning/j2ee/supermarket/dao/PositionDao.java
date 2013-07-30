@@ -1,16 +1,13 @@
 package org.learning.j2ee.supermarket.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
+import java.math.*;
 
 /**
- * JoinDepot Data Access Object (DAO).
+ * PositionDao Data Access Object (DAO).
  * This class contains all database handling that is needed to 
- * permanently store and retrieve JoinDepot object instances. 
+ * permanently store and retrieve PositionDao object instances. 
  */
 
 /**
@@ -31,7 +28,7 @@ import java.util.List;
  * information. Thank you!
  */
 
-public class JoinDepotDao {
+public class PositionDao {
 
 	/**
 	 * createValueObject-method. This method is used when the Dao class needs to
@@ -41,8 +38,8 @@ public class JoinDepotDao {
 	 * If you extend the valueObject class, make sure to override the clone()
 	 * method in it!
 	 */
-	public JoinDepot createValueObject() {
-		return new JoinDepot();
+	public Position createValueObject() {
+		return new Position();
 	}
 
 	/**
@@ -52,11 +49,11 @@ public class JoinDepotDao {
 	 * as a parameter. Returned valueObject will be created using the
 	 * createValueObject() method.
 	 */
-	public JoinDepot getObject(Connection conn, int id)
+	public Position getObject(Connection conn, int positionId)
 			throws NotFoundException, SQLException {
 
-		JoinDepot valueObject = createValueObject();
-		valueObject.setId(id);
+		Position valueObject = createValueObject();
+		valueObject.setPositionId(positionId);
 		load(conn, valueObject);
 		return valueObject;
 	}
@@ -76,15 +73,15 @@ public class JoinDepotDao {
 	 *            This parameter contains the class instance to be loaded.
 	 *            Primary-key field must be set for this to work properly.
 	 */
-	public void load(Connection conn, JoinDepot valueObject)
+	public void load(Connection conn, Position valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "SELECT * FROM tb_joinDept WHERE (id = ? ) ";
+		String sql = "SELECT * FROM tb_position WHERE (positionId = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, valueObject.getId());
+			stmt.setInt(1, valueObject.getPositionId());
 
 			singleQuery(conn, stmt, valueObject);
 
@@ -105,7 +102,7 @@ public class JoinDepotDao {
 	 */
 	public List loadAll(Connection conn) throws SQLException {
 
-		String sql = "SELECT * FROM tb_joinDept ORDER BY id ASC ";
+		String sql = "SELECT * FROM tb_position ORDER BY positionId ASC ";
 		List searchResults = listQuery(conn, conn.prepareStatement(sql));
 
 		return searchResults;
@@ -126,7 +123,7 @@ public class JoinDepotDao {
 	 *            automatic surrogate-keys are not used the Primary-key field
 	 *            must be set for this to work properly.
 	 */
-	public synchronized void create(Connection conn, JoinDepot valueObject)
+	public synchronized void create(Connection conn, Position valueObject)
 			throws SQLException {
 
 		String sql = "";
@@ -134,16 +131,10 @@ public class JoinDepotDao {
 		ResultSet result = null;
 
 		try {
-			sql = "INSERT INTO tb_joinDept ( order_id, depo_id, wareName, "
-					+ "joinTime, weight, remark) VALUES (?, ?, ?, ?, ?, ?) ";
+			sql = "INSERT INTO tb_position ( positionName) VALUES (?) ";
 			stmt = conn.prepareStatement(sql);
 
-			stmt.setString(1, valueObject.getOrderId());
-			stmt.setInt(2, valueObject.getDepoId());
-			stmt.setString(3, valueObject.getWareName());
-			stmt.setString(4, valueObject.getJoinTime());
-			stmt.setDouble(5, valueObject.getWeight());
-			stmt.setString(6, valueObject.getRemark());
+			stmt.setString(1, valueObject.getPositionName());
 
 			int rowcount = databaseUpdate(conn, stmt);
 			if (rowcount != 1) {
@@ -169,7 +160,7 @@ public class JoinDepotDao {
 
 			if (result.next()) {
 
-				valueObject.setId((int) result.getLong(1));
+				valueObject.setPositionId((int) result.getLong(1));
 
 			} else {
 				// System.out.println("Unable to find primary-key for created object!");
@@ -199,23 +190,17 @@ public class JoinDepotDao {
 	 *            This parameter contains the class instance to be saved.
 	 *            Primary-key field must be set for this to work properly.
 	 */
-	public void save(Connection conn, JoinDepot valueObject)
+	public void save(Connection conn, Position valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "UPDATE tb_joinDept SET order_id = ?, depo_id = ?, wareName = ?, "
-				+ "joinTime = ?, weight = ?, remark = ? WHERE (id = ? ) ";
+		String sql = "UPDATE tb_position SET positionName = ? WHERE (positionId = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, valueObject.getOrderId());
-			stmt.setInt(2, valueObject.getDepoId());
-			stmt.setString(3, valueObject.getWareName());
-			stmt.setString(4, valueObject.getJoinTime());
-			stmt.setDouble(5, valueObject.getWeight());
-			stmt.setString(6, valueObject.getRemark());
+			stmt.setString(1, valueObject.getPositionName());
 
-			stmt.setInt(7, valueObject.getId());
+			stmt.setInt(2, valueObject.getPositionId());
 
 			int rowcount = databaseUpdate(conn, stmt);
 			if (rowcount == 0) {
@@ -249,15 +234,15 @@ public class JoinDepotDao {
 	 *            This parameter contains the class instance to be deleted.
 	 *            Primary-key field must be set for this to work properly.
 	 */
-	public void delete(Connection conn, JoinDepot valueObject)
+	public void delete(Connection conn, Position valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "DELETE FROM tb_joinDept WHERE (id = ? ) ";
+		String sql = "DELETE FROM tb_position WHERE (positionId = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, valueObject.getId());
+			stmt.setInt(1, valueObject.getPositionId());
 
 			int rowcount = databaseUpdate(conn, stmt);
 			if (rowcount == 0) {
@@ -292,7 +277,7 @@ public class JoinDepotDao {
 	 */
 	public void deleteAll(Connection conn) throws SQLException {
 
-		String sql = "DELETE FROM tb_joinDept";
+		String sql = "DELETE FROM tb_position";
 		PreparedStatement stmt = null;
 
 		try {
@@ -316,7 +301,7 @@ public class JoinDepotDao {
 	 */
 	public int countAll(Connection conn) throws SQLException {
 
-		String sql = "SELECT count(*) FROM tb_joinDept";
+		String sql = "SELECT count(*) FROM tb_position";
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 		int allRows = 0;
@@ -351,71 +336,32 @@ public class JoinDepotDao {
 	 *            This parameter contains the class instance where search will
 	 *            be based. Primary-key field should not be set.
 	 */
-	public List searchMatching(Connection conn, JoinDepot valueObject)
+	public List searchMatching(Connection conn, Position valueObject)
 			throws SQLException {
 
 		List searchResults;
 
 		boolean first = true;
 		StringBuffer sql = new StringBuffer(
-				"SELECT * FROM tb_joinDept WHERE 1=1 ");
+				"SELECT * FROM tb_position WHERE 1=1 ");
 
-		if (valueObject.getId() != 0) {
+		if (valueObject.getPositionId() != 0) {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND id = ").append(valueObject.getId()).append(" ");
-		}
-
-		if (valueObject.getOrderId() != null) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND order_id LIKE '").append(valueObject.getOrderId())
-					.append("%' ");
-		}
-
-		if (valueObject.getDepoId() != 0) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND depo_id = ").append(valueObject.getDepoId())
+			sql.append("AND positionId = ").append(valueObject.getPositionId())
 					.append(" ");
 		}
 
-		if (valueObject.getWareName() != null) {
+		if (valueObject.getPositionName() != null) {
 			if (first) {
 				first = false;
 			}
-			sql.append("AND wareName LIKE '").append(valueObject.getWareName())
-					.append("%' ");
+			sql.append("AND positionName LIKE '")
+					.append(valueObject.getPositionName()).append("%' ");
 		}
 
-		if (valueObject.getJoinTime() != null) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND joinTime LIKE '").append(valueObject.getJoinTime())
-					.append("%' ");
-		}
-
-		if (valueObject.getWeight() != 0) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND weight = ").append(valueObject.getWeight())
-					.append(" ");
-		}
-
-		if (valueObject.getRemark() != null) {
-			if (first) {
-				first = false;
-			}
-			sql.append("AND remark LIKE '").append(valueObject.getRemark())
-					.append("%' ");
-		}
-
-		sql.append("ORDER BY id ASC ");
+		sql.append("ORDER BY positionId ASC ");
 
 		// Prevent accidential full table results.
 		// Use loadAll if all rows must be returned.
@@ -470,7 +416,7 @@ public class JoinDepotDao {
 	 *            Class-instance where resulting data will be stored.
 	 */
 	protected void singleQuery(Connection conn, PreparedStatement stmt,
-			JoinDepot valueObject) throws NotFoundException, SQLException {
+			Position valueObject) throws NotFoundException, SQLException {
 
 		ResultSet result = null;
 
@@ -479,17 +425,12 @@ public class JoinDepotDao {
 
 			if (result.next()) {
 
-				valueObject.setId(result.getInt("id"));
-				valueObject.setOrderId(result.getString("order_id"));
-				valueObject.setDepoId(result.getInt("depo_id"));
-				valueObject.setWareName(result.getString("wareName"));
-				valueObject.setJoinTime(result.getString("joinTime"));
-				valueObject.setWeight(result.getDouble("weight"));
-				valueObject.setRemark(result.getString("remark"));
+				valueObject.setPositionId(result.getInt("positionId"));
+				valueObject.setPositionName(result.getString("positionName"));
 
 			} else {
-				// System.out.println("JoinDepot Object Not Found!");
-				throw new NotFoundException("JoinDepot Object Not Found!");
+				// System.out.println("PositionDao Object Not Found!");
+				throw new NotFoundException("PositionDao Object Not Found!");
 			}
 		} finally {
 			if (result != null)
@@ -520,15 +461,10 @@ public class JoinDepotDao {
 			result = stmt.executeQuery();
 
 			while (result.next()) {
-				JoinDepot temp = createValueObject();
+				Position temp = createValueObject();
 
-				temp.setId(result.getInt("id"));
-				temp.setOrderId(result.getString("order_id"));
-				temp.setDepoId(result.getInt("depo_id"));
-				temp.setWareName(result.getString("wareName"));
-				temp.setJoinTime(result.getString("joinTime"));
-				temp.setWeight(result.getDouble("weight"));
-				temp.setRemark(result.getString("remark"));
+				temp.setPositionId(result.getInt("positionId"));
+				temp.setPositionName(result.getString("positionName"));
 
 				searchResults.add(temp);
 			}
@@ -541,6 +477,22 @@ public class JoinDepotDao {
 		}
 
 		return (List) searchResults;
+	}
+
+	public String getPositionNameById(int positionId) throws SQLException {
+		Position positionToSearch = new Position();
+		positionToSearch.setPositionId(positionId);
+
+		PositionDao positionHandler = new PositionDao();
+
+		List searchResult = positionHandler.searchMatching(
+				SupermarketMySql.getConnection(), positionToSearch);
+
+		if (searchResult.size() == 0) {
+			return "";
+		} else {
+			return ((Position) (searchResult.get(0))).getPositionName();
+		}
 	}
 
 }
