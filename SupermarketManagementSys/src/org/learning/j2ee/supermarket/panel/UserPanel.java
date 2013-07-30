@@ -27,8 +27,6 @@ import org.learning.j2ee.supermarket.dao.JoinDepotDao;
 import org.learning.j2ee.supermarket.dao.NotFoundException;
 import org.learning.j2ee.supermarket.dao.PositionDao;
 import org.learning.j2ee.supermarket.dao.SupermarketMySql;
-import org.learning.j2ee.supermarket.dao.User;
-import org.learning.j2ee.supermarket.dao.UserDao;
 
 public class UserPanel extends JPanel {
 	private JTextField dateTextField;
@@ -141,17 +139,18 @@ public class UserPanel extends JPanel {
 								userToDelete);
 					} catch (NotFoundException | SQLException e1) {
 						e1.printStackTrace();
-						
-						JOptionPane.showMessageDialog(getParent(), "删除用户 " + userToDelete + " 失败！");
-						
+
+						JOptionPane.showMessageDialog(getParent(), "删除用户 "
+								+ userToDelete + " 失败！");
+
 						repaint();
-						
+
 						return;
 					}
 
 					JOptionPane.showMessageDialog(getParent(), "数据删除成功！",
 							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
-					
+
 					defaultTableModel.removeRow(row);
 					repaint();
 
