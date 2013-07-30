@@ -21,8 +21,11 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.learning.j2ee.supermarket.dao.JoinDepot;
+import org.learning.j2ee.supermarket.dao.Basicmessage;
+import org.learning.j2ee.supermarket.dao.BasicmessageDao;
 import org.learning.j2ee.supermarket.dao.JoinDepotDao;
+import org.learning.j2ee.supermarket.dao.NotFoundException;
+import org.learning.j2ee.supermarket.dao.PositionDao;
 import org.learning.j2ee.supermarket.dao.SupermarketMySql;
 import org.learning.j2ee.supermarket.dao.User;
 import org.learning.j2ee.supermarket.dao.UserDao;
@@ -30,8 +33,8 @@ import org.learning.j2ee.supermarket.dao.UserDao;
 public class UserPanel extends JPanel {
 	private JTextField dateTextField;
 	private final JoinDepotDao model = new JoinDepotDao();
-	private JTable table_1;
-	private UserDao userHandler = new UserDao();
+
+	private BasicmessageDao basicMessageHandler = new BasicmessageDao();
 	private JTable stockTable;
 
 	/**
@@ -51,36 +54,7 @@ public class UserPanel extends JPanel {
 		dateTextField.setColumns(10);
 
 		JButton findButton = new JButton("搜索");
-		findButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String userNameToSearch = dateTextField.getText();
-				if (userNameToSearch.length() == 0) {
-					JOptionPane.showMessageDialog(getParent(), "没有填写查询条件！",
-							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
-					return;
-				}
-
-				User searchUser = new User();
-				searchUser.setUserName(userNameToSearch);
-
-				List searchResult = searchMatchingRecords(searchUser);
-
-				displayUserSearchResult(searchResult);
-
-			}
-
-			private List searchMatchingRecords(User searchTargetUser) {
-				List matchingRecords = null;
-				try {
-					matchingRecords = userHandler.searchMatching(
-							SupermarketMySql.getConnection(), searchTargetUser);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
-				return matchingRecords;
-			}
-		});
-
+		initFindButton(findButton);
 		addFindButton(findButton);
 
 		addInsertButton();
@@ -94,8 +68,42 @@ public class UserPanel extends JPanel {
 		initializeStockDisplayTable();
 	}
 
+	private void initFindButton(JButton findButton) {
+		findButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String userNameToSearch = dateTextField.getText();
+				if (userNameToSearch.length() == 0) {
+					JOptionPane.showMessageDialog(getParent(), "没有填写查询条件！",
+							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+
+				List searchResult = searchMatchingUserRecords(userNameToSearch);
+
+				displayUserSearchResult(searchResult);
+
+			}
+
+			private List searchMatchingUserRecords(String searchUserName) {
+				Basicmessage searchUser = new Basicmessage();
+				searchUser.setName(searchUserName);
+
+				List matchingRecords = null;
+
+				try {
+					matchingRecords = basicMessageHandler.searchMatching(
+							SupermarketMySql.getConnection(), searchUser);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				return matchingRecords;
+			}
+		});
+	}
+
 	private void addFindButton(JButton findButton) {
 		findButton.setBounds(301, 82, 93, 23);
+
 		add(findButton);
 	}
 
@@ -104,30 +112,47 @@ public class UserPanel extends JPanel {
 		dateLabel.setBounds(68, 88, 66, 15);
 		add(dateLabel);
 
-		List lists = null;
-		try {
-			lists = userHandler.loadAll(SupermarketMySql.getConnection());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 	}
 
 	private void addDeleteButton() {
 		JButton deleteButton = new JButton("删除");
+
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int row = table_1.getSelectedRow();
+				int row = stockTable.getSelectedRow();
+
 				if (row < 0) {
 					JOptionPane.showMessageDialog(getParent(), "没有选择要刪除的数据！",
 							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
 					return;
 				} else {
-					// String column = model.getValueAt(row, 0).toString();
-					// dao.deleteJoinDepot(Integer.parseInt(column));
+					DefaultTableModel defaultTableModel = (DefaultTableModel) (stockTable
+							.getModel());
+
+					String userId = (String) defaultTableModel.getValueAt(row,
+							0);
+
+					BasicmessageDao userHandler = new BasicmessageDao();
+					Basicmessage userToDelete = new Basicmessage();
+					userToDelete.setId(Integer.parseInt(userId));
+
+					try {
+						userHandler.delete(SupermarketMySql.getConnection(),
+								userToDelete);
+					} catch (NotFoundException | SQLException e1) {
+						e1.printStackTrace();
+						
+						JOptionPane.showMessageDialog(getParent(), "删除用户 " + userToDelete + " 失败！");
+						
+						repaint();
+						
+						return;
+					}
+
 					JOptionPane.showMessageDialog(getParent(), "数据删除成功！",
 							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
+					
+					defaultTableModel.removeRow(row);
 					repaint();
 
 				}
@@ -153,7 +178,7 @@ public class UserPanel extends JPanel {
 		JButton updateButton = new JButton("修改");
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int row = table_1.getSelectedRow();
+				int row = stockTable.getSelectedRow();
 				if (row < 0) {
 					JOptionPane.showMessageDialog(getParent(), "没有选择要修改的数据！",
 							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
@@ -184,7 +209,7 @@ public class UserPanel extends JPanel {
 		scrollPane.setBounds(68, 150, 534, 199);
 		add(scrollPane);
 
-		String[] columnNames = { "序号", "用户名" };
+		String[] columnNames = { "用户ID", "姓名", "年龄", "性别", "部门", "职务" };
 		String[][] data = {};
 
 		stockTable = new JTable(data, columnNames);
@@ -193,14 +218,26 @@ public class UserPanel extends JPanel {
 	}
 
 	protected void displayUserSearchResult(List matchingRecords) {
+		if (matchingRecords.size() == 0) {
+			JOptionPane.showMessageDialog(getParent(), "没有符合条件的查询结果！");
+
+			return;
+		}
+
+		stockTable.removeAll();
+
 		for (Object record : matchingRecords) {
-			addNewStockInTable(((User) record).getId(),
-					((User) record).getUserName());
+			addNewStockInTable(((Basicmessage) record).getId(),
+					((Basicmessage) record).getName(),
+					((Basicmessage) record).getAge(),
+					((Basicmessage) record).getDept(),
+					((Basicmessage) record).getPositionId());
 		}
 
 	}
 
-	private void addNewStockInTable(int id, String userName) {
+	private void addNewStockInTable(int id, String userName, int age,
+			int department, int positionId) {
 		DefaultTableModel defaultTableModel = (DefaultTableModel) (stockTable
 				.getModel());
 
@@ -208,6 +245,16 @@ public class UserPanel extends JPanel {
 
 		newRow.add(Integer.toString(id));
 		newRow.add(userName);
+		newRow.add(Integer.toString(age));
+		newRow.add("男");
+		newRow.add("TODO");
+		try {
+			newRow.add(new PositionDao().getPositionNameById(positionId));
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(getParent(), "连接MySQL数据库错误！");
+
+			return;
+		}
 
 		defaultTableModel.addRow(newRow);
 

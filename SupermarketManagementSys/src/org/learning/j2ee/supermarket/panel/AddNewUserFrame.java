@@ -6,6 +6,7 @@ package org.learning.j2ee.supermarket.panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,6 +20,8 @@ import javax.swing.JTextField;
 
 import org.learning.j2ee.supermarket.dao.Basicmessage;
 import org.learning.j2ee.supermarket.dao.BasicmessageDao;
+import org.learning.j2ee.supermarket.dao.Position;
+import org.learning.j2ee.supermarket.dao.PositionDao;
 import org.learning.j2ee.supermarket.dao.SupermarketMySql;
 
 /**
@@ -40,7 +43,7 @@ public class AddNewUserFrame extends JFrame {
 
 	public AddNewUserFrame() {
 		setBounds(100, 100, 459, 285);
-		
+
 		setTitle("\u6DFB\u52A0\u5458\u5DE5\u4FE1\u606F\u7A97\u4F53");
 		getContentPane().setLayout(null);
 
@@ -117,7 +120,34 @@ public class AddNewUserFrame extends JFrame {
 				basicmessage.setName(name);
 				basicmessage.setAge(Integer.parseInt(age));
 				basicmessage.setDept(1);
-				basicmessage.setPositionId(1);
+				PositionDao positionDbHandler = new PositionDao();
+				Position positionToSearch = new Position();
+				positionToSearch.setPositionName((String) positionCombox
+						.getSelectedItem());
+
+				List searchResult;
+				try {
+					searchResult = positionDbHandler.searchMatching(
+							SupermarketMySql.getConnection(), positionToSearch);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+
+					JOptionPane.showMessageDialog(getParent(), "连接MySQL数据库出错！",
+							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
+
+					return;
+				}
+				
+				if (searchResult.size() == 0) {
+					JOptionPane.showMessageDialog(getParent(), "职位 "
+							+ positionToSearch.getPositionName()
+							+ " 在数据库中没有记录！添加用户失败！");
+
+					return;
+				}
+
+				basicmessage.setPositionId(((Position) searchResult.get(0))
+						.getPositionId());
 
 				try {
 					basicUserMessageDao.create(
@@ -125,17 +155,24 @@ public class AddNewUserFrame extends JFrame {
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(getParent(), "连接MySQL数据库出错！",
 							"信息提示框", JOptionPane.INFORMATION_MESSAGE);
-					
+
 					return;
 				}
-				
-				JOptionPane.showMessageDialog(getParent(), "已添加新用户： " + basicmessage, "Message", JOptionPane.INFORMATION_MESSAGE);
+
+				JOptionPane.showMessageDialog(getParent(), "已添加新用户： "
+						+ basicmessage, "Message",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		button.setBounds(125, 186, 89, 23);
 		panel.add(button);
 
 		JButton button_1 = new JButton("\u5173\u95ED");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
 		button_1.setBounds(267, 186, 89, 23);
 		panel.add(button_1);
 

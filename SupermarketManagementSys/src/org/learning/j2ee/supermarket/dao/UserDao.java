@@ -79,7 +79,7 @@ public class UserDao {
 	public void load(Connection conn, User valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "SELECT * FROM tb_users WHERE (id = ? ) ";
+		String sql = "SELECT * FROM tb_user WHERE (id = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
@@ -105,7 +105,7 @@ public class UserDao {
 	 */
 	public List loadAll(Connection conn) throws SQLException {
 
-		String sql = "SELECT * FROM tb_users ORDER BY id ASC ";
+		String sql = "SELECT * FROM tb_user ORDER BY id ASC ";
 		List searchResults = listQuery(conn, conn.prepareStatement(sql));
 
 		return searchResults;
@@ -134,7 +134,7 @@ public class UserDao {
 		ResultSet result = null;
 
 		try {
-			sql = "INSERT INTO tb_users ( userName, password) VALUES (?, ?) ";
+			sql = "INSERT INTO tb_user ( userName, password) VALUES (?, ?) ";
 			stmt = conn.prepareStatement(sql);
 
 			stmt.setString(1, valueObject.getUserName());
@@ -197,7 +197,7 @@ public class UserDao {
 	public void save(Connection conn, User valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "UPDATE tb_users SET userName = ?, password = ? WHERE (id = ? ) ";
+		String sql = "UPDATE tb_user SET userName = ?, password = ? WHERE (id = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
@@ -242,7 +242,7 @@ public class UserDao {
 	public void delete(Connection conn, User valueObject)
 			throws NotFoundException, SQLException {
 
-		String sql = "DELETE FROM tb_users WHERE (id = ? ) ";
+		String sql = "DELETE FROM tb_user WHERE (id = ? ) ";
 		PreparedStatement stmt = null;
 
 		try {
@@ -282,7 +282,7 @@ public class UserDao {
 	 */
 	public void deleteAll(Connection conn) throws SQLException {
 
-		String sql = "DELETE FROM tb_users";
+		String sql = "DELETE FROM tb_user";
 		PreparedStatement stmt = null;
 
 		try {
@@ -306,7 +306,7 @@ public class UserDao {
 	 */
 	public int countAll(Connection conn) throws SQLException {
 
-		String sql = "SELECT count(*) FROM tb_users";
+		String sql = "SELECT count(*) FROM tb_user";
 		PreparedStatement stmt = null;
 		ResultSet result = null;
 		int allRows = 0;
@@ -347,7 +347,7 @@ public class UserDao {
 		List searchResults;
 
 		boolean first = true;
-		StringBuffer sql = new StringBuffer("SELECT * FROM tb_users WHERE 1=1 ");
+		StringBuffer sql = new StringBuffer("SELECT * FROM tb_user WHERE 1=1 ");
 
 		if (valueObject.getId() != 0) {
 			if (first) {
